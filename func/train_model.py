@@ -89,7 +89,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 print(cur_time - last_time)
 
             print('epoch: {:-4d}, start_epoch: {:-4d}, epoch_num: {:-4d}.'
-                  .format(epoch, args.start_epoch, args.epoch_num1))
+                  .format(epoch, args.start_epoch1, args.epoch_num1))
 
         if args.use_cuda:
             model.module.backbone.train(False)
