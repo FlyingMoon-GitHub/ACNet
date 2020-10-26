@@ -60,7 +60,7 @@ if __name__ == '__main__':
         model_dict.update({k.replace('module.', ''): v for k, v in torch.load(args.savepoint_file).items()})
         model.load_state_dict(model_dict)
     else:
-        model.apply(weightInit)
+        model.tree.apply(weightInit)
 
     if args.use_cuda:
         model = model.cuda()
