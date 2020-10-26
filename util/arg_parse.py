@@ -65,11 +65,11 @@ def getArgs():
     parser.add_argument('--momentum2', dest='momentum2',
                         default=0.9, type=float)
     parser.add_argument('--decay_step2', dest='decay_step2',
-                        default=0.1, type=int)
+                        default=10, type=int)
     parser.add_argument('--decay_gamma2', dest='decay_gamma2',
-                        default=0.25, type=float)
+                        default=0.1, type=float)
     parser.add_argument('--weight_decay2', dest='weight_decay2',
-                        default=5e-6, type=float)
+                        default=5e-4, type=float)
 
 
 
