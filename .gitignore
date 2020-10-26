@@ -1,0 +1,7 @@
+# Project exclude paths
+/venv/
+/data/**/annos
+/data/**/images
+/checkpoint/**
+/log/**
+/runs/**
