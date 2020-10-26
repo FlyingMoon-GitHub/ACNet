@@ -12,7 +12,7 @@ class LabelPredictionModule(nn.Module):
 
         self.bn = nn.BatchNorm2d(in_channels)
         self.conv1 = nn.Conv2d(in_channels, in_channels, kernel_size=1)
-        self.l2norm = nn.LayerNorm((in_channels, 1, 1))
+        self.l2norm = lambda x: x / torch.norm(x, dim=(2, 3), keepdim=True)
         self.fc = nn.Linear(in_channels, self.class_num)
 
         self.maxpool = nn.AdaptiveMaxPool2d((1, 1))
