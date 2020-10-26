@@ -13,7 +13,7 @@ class BranchRoutingModule(nn.Module):
 
         self.conv1 = nn.Conv2d(in_channels, in_channels, kernel_size=1)
         self.gcblock = GCBlock(in_channels, in_channels)
-        self.l2norm = nn.LayerNorm((in_channels, 1, 1))
+        self.l2norm = lambda x: x / torch.norm(x, dim=[2, 3], keepdim=True)
         self.fc = nn.Linear(in_channels, 1)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
