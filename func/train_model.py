@@ -93,6 +93,11 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
             print('epoch: {:-4d}, start_epoch: {:-4d}, epoch_num: {:-4d}.'
                   .format(epoch, args.start_epoch1, args.epoch_num1))
 
+            if args.type == 'val':
+                val_result = test(args, model=model, dataloader=dataloaders['val'], type='val')
+                val_acc = val_result['val_acc']
+                print('val_acc: {:6.4f}.'.format(val_acc))
+
         if args.use_cuda:
             model.module.backbone.train(False)
         else:
