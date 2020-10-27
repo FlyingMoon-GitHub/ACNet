@@ -75,9 +75,6 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 optimizers[0].step()
 
-                if learning_rate_schedulers[0]:
-                    learning_rate_schedulers[0].step()
-
                 if args.use_cuda:
                     torch.cuda.synchronize()
 
@@ -89,6 +86,9 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                       .format(cur_step, train_epoch_step, loss.detach().item()), flush=True)
 
                 print(cur_time - last_time)
+
+            if learning_rate_schedulers[0]:
+                learning_rate_schedulers[0].step()
 
             print('epoch: {:-4d}, stqart_epoch: {:-4d}, epoch_num: {:-4d}.'
                   .format(epoch, args.start_epoch1, args.epoch_num1))
@@ -145,9 +145,6 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
             optimizers[1].step()
 
-            if learning_rate_schedulers[1]:
-                learning_rate_schedulers[1].step()
-
             if args.use_cuda:
                 torch.cuda.synchronize()
 
@@ -159,6 +156,9 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                   .format(cur_step, train_epoch_step, loss.detach().item()), flush=True)
 
             print(cur_time - last_time)
+
+        if learning_rate_schedulers[1]:
+            learning_rate_schedulers[1].step()
 
         print('epoch: {:-4d}, start_epoch: {:-4d}, epoch_num: {:-4d}.'
               .format(epoch, args.start_epoch2, args.epoch_num2))
