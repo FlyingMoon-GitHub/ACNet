@@ -15,13 +15,13 @@ class LabelPredictionModule(nn.Module):
         self.l2norm = lambda x: x / torch.norm(x, dim=[2, 3], keepdim=True)
         self.fc = nn.Linear(in_channels, self.class_num)
 
-        self.maxpool = nn.AdaptiveMaxPool2d((1, 1))
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x)
 
     def forward(self, x):
         feature = self.bn(x)
         feature = self.conv1(feature)
-        feature = self.maxpool(feature)
+        feature = self.avgpool(feature)
         feature = self.signedsqrt(feature)
         feature = self.l2norm(feature)
 
