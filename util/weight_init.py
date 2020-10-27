@@ -4,8 +4,12 @@ from torch import nn
 
 def weightInit(module):
     if isinstance(module, (nn.Conv2d, nn.Linear)):
-        nn.init.xavier_normal_(module.weight.data)
-        nn.init.constant_(module.bias.data, 0)
+        if module.weight is not None:
+            nn.init.xavier_normal_(module.weight.data)
+        if module.bias is not None:
+            nn.init.constant_(module.bias.data, 0)
     elif isinstance(module, nn.BatchNorm2d):
-        module.weight.data.fill_(1)
-        module.bias.data.zero_()
+        if module.weight is not None:
+            module.weight.data.fill_(1)
+        if module.bias is not None:
+            module.bias.data.zero_()
