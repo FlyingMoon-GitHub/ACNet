@@ -78,8 +78,8 @@ class BinaryNeuralTree(nn.Module):
                 features[i + 1][j * 2] = self.attention_transformers[i][j * 2](features[i][j])
                 features[i + 1][j * 2 + 1] = self.attention_transformers[i][j * 2 + 1](features[i][j])
 
-        for i in range(int(pow(2, self.tree_height - 1))):
-            leaves_out[i] = self.label_predictions[i](features[self.tree_height - 1][i])
+        leaves_out = tuple((self.label_predictions[i](features[self.tree_height - 1][i]) for i in
+                            range(int(pow(2, self.tree_height - 1)))))
 
         final_out = probs[self.tree_height - 2][0] * leaves_out[0]
         for i in range(1, int(pow(2, self.tree_height - 1))):
