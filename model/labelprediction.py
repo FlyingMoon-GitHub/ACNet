@@ -14,7 +14,7 @@ class LabelPredictionModule(nn.Module):
         self.conv1 = nn.Conv2d(in_channels, in_channels, kernel_size=1)
         self.l2norm = lambda x: x / torch.norm(x, dim=[2, 3], keepdim=True)
         self.fc = nn.Linear(in_channels, self.class_num)
-        self.logsoftmax = nn.LogSoftmax(dim=1)
+        self.softmax = nn.Softmax(dim=1)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x)
@@ -29,6 +29,6 @@ class LabelPredictionModule(nn.Module):
         feature = feature.view(feature.size(0), -1)
 
         out = self.fc(feature)
-        out = self.logsoftmax(out)
+        out = self.softmax(out)
 
         return out
