@@ -44,10 +44,10 @@ def test(args, model, dataloader, type):
 
             leaves_out, final_out = model(image)
 
-            loss = nn.CrossEntropyLoss()(final_out, label)
+            loss = nn.NLLLoss()(final_out, label)
 
             for out in leaves_out:
-                loss = loss + nn.CrossEntropyLoss()(out, label)
+                loss = loss + nn.NLLLoss()(out, label)
 
             if args.use_cuda:
                 loss = loss.cuda()
