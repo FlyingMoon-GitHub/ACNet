@@ -60,10 +60,10 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 leaves_out, final_out = model(image)
 
-                loss = nn.NLLLoss()(final_out, label)
+                loss = nn.CrossEntropyLoss()(final_out, label)
 
                 for out in leaves_out:
-                    loss = loss + nn.NLLLoss()(out, label)
+                    loss = loss + nn.CrossEntropyLoss()(out, label)
 
                 if args.use_cuda:
                     loss = loss.cuda()
@@ -130,10 +130,10 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
             leaves_out, final_out = model(image)
 
-            loss = nn.NLLLoss()(final_out, label)
+            loss = nn.CrossEntropyLoss()(final_out, label)
 
             for out in leaves_out:
-                loss = loss + nn.NLLLoss()(out, label)
+                loss = loss + nn.CrossEntropyLoss()(out, label)
 
             if args.use_cuda:
                 loss = loss.cuda()
