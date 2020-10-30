@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     import matplotlib.pyplot as plt
 
-    print(item1[1], item2[1])
+    print(item1[0], item2[0])
     plt.imshow(item1[0].permute(1, 2, 0))
     plt.show()
 

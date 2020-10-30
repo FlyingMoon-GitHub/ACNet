@@ -6,6 +6,7 @@ from torchvision import transforms
 from torchvision.transforms import functional as F
 from PIL import Image
 
+
 class MyTransformation(object):
     def __init__(self, transformation_list):
         self.transformation_list = transformation_list
@@ -30,6 +31,10 @@ class MyTransformation(object):
                 angle = trans.get_params(trans.degrees)
                 for img_no, trans_img in enumerate(trans_imgs):
                     trans_imgs[img_no] = F.rotate(trans_img, angle, trans.resample, trans.expand, trans.center)
+            elif isinstance(trans, transforms.RandomCrop):
+                i, j, th, tw = trans.get_params(trans_imgs[0], trans.size)
+                for img_no, trans_img in enumerate(trans_imgs):
+                    trans_imgs[img_no] = F.crop(trans_img, i, j, th, tw)
             elif isinstance(trans, transforms.RandomResizedCrop):
                 i, j, h, w = trans.get_params(trans_imgs[0], trans.scale, trans.ratio)
                 for img_no, trans_img in enumerate(trans_imgs):
@@ -49,7 +54,8 @@ class MyTransformation(object):
                 if random_value < trans.p:
                     for img_no, trans_img in enumerate(trans_imgs):
                         trans_imgs[img_no] = F.vflip(trans_img)
-            elif isinstance(trans, (transforms.Resize, transforms.ToTensor, transforms.Normalize)):
+            elif isinstance(trans,
+                            (transforms.Resize, transforms.CenterCrop, transforms.ToTensor, transforms.Normalize)):
                 for img_no, trans_img in enumerate(trans_imgs):
                     trans_imgs[img_no] = trans(trans_img)
             else:
@@ -67,14 +73,17 @@ def getTransformation(args, type):
 
     transformation_list = []
 
+    transformation_list.append(transforms.Resize(size=(int(args.target_size / 0.75), int(args.target_size / 0.75))))
+
     if type == 'train':
+        transformation_list.append(transforms.RandomCrop(size=(args.target_size, args.target_size)))
         transformation_list.append(transforms.RandomRotation(degrees=20))
-        transformation_list.append(transforms.RandomResizedCrop(size=args.target_size, scale=(0.9, 1.0)))
-        # transformation_list.append(transforms.ColorJitter(brightness=0.1))
+        transformation_list.append(transforms.ColorJitter(brightness=0.1))
         transformation_list.append(transforms.RandomHorizontalFlip(p=0.5))
         # transformation_list.append(transforms.RandomVerticalFlip(p=0.5))
+    elif type in ['val', 'test']:
+        transformation_list.append(transforms.CenterCrop(size=(args.target_size, args.target_size)))
 
-    transformation_list.append(transforms.Resize((args.target_size, args.target_size)))
     transformation_list.append(transforms.ToTensor()),
     transformation_list.append(transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]))
 
