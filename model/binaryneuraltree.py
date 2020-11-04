@@ -62,7 +62,6 @@ class BinaryNeuralTree(nn.Module):
     def forward(self, x):
         probs = [[None for _ in range(int(pow(2, i + 1)))] for i in range(self.tree_height - 1)]
         features = [[None for _ in range(int(pow(2, i)))] for i in range(self.tree_height)]
-        leaves_out = [None for _ in range(int(pow(2, self.tree_height - 1)))]
 
         features[0][0] = x
 
