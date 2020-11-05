@@ -13,11 +13,11 @@ class BranchRoutingModule(nn.Module):
 
         self.conv1 = nn.Conv2d(in_channels, in_channels, kernel_size=1)
         self.gcblock = GCBlock(in_channels, in_channels)
-        self.l2norm = lambda x: x / torch.norm(x, dim=[2, 3], keepdim=True)
+        self.l2norm = lambda x: F.normalize(x, dim=1)
         self.fc = nn.Linear(in_channels, 1)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x)
+        self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x + 1e-12)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):

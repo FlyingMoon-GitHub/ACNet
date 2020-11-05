@@ -16,7 +16,7 @@ class LabelPredictionModule(nn.Module):
         self.fc = nn.Linear(in_channels, self.class_num, bias=True)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x)
+        self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x + 1e-12)
 
     def forward(self, x):
         feature = self.bn(x)
