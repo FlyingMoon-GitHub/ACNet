@@ -8,6 +8,7 @@ from data.dataset import *
 from func.train_model import *
 from model.acnet import *
 from util.arg_parse import *
+from util.config import *
 from util.weight_init import *
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'

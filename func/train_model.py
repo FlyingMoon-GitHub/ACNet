@@ -28,8 +28,6 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
     if not args.savepoint_file:
 
-        print('stage 1')
-
         for epoch in range(args.start_epoch1, args.epoch_num1):
 
             cur_step = 0
@@ -90,7 +88,8 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
             if learning_rate_schedulers[0]:
                 learning_rate_schedulers[0].step()
 
-            print('epoch: {:-4d}, stqart_epoch: {:-4d}, epoch_num: {:-4d}.'
+            print('stage 1')
+            print('epoch: {:-4d}, start_epoch: {:-4d}, epoch_num: {:-4d}.'
                   .format(epoch, args.start_epoch1, args.epoch_num1))
 
             if args.type == 'val':
@@ -102,8 +101,6 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
             model.module.backbone.train(False)
         else:
             model.backbone.train(False)
-
-    print('stage 2')
 
     for epoch in range(args.start_epoch2, args.epoch_num2):
 
@@ -160,6 +157,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
         if learning_rate_schedulers[1]:
             learning_rate_schedulers[1].step()
 
+        print('stage 2')
         print('epoch: {:-4d}, start_epoch: {:-4d}, epoch_num: {:-4d}.'
               .format(epoch, args.start_epoch2, args.epoch_num2))
 
