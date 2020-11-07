@@ -97,11 +97,6 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 val_acc = val_result['val_acc']
                 print('val_acc: {:6.4f}.'.format(val_acc))
 
-        if args.use_cuda:
-            model.module.backbone.train(False)
-        else:
-            model.backbone.train(False)
-
     for epoch in range(args.start_epoch2, args.epoch_num2):
 
         cur_step = 0
