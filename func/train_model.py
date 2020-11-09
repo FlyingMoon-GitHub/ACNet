@@ -58,10 +58,10 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 leaves_out, final_out = model(image)
 
-                loss = nn.CrossEntropyLoss()(final_out, label)
+                loss = nn.NLLLoss()(final_out, label)
 
                 for out in leaves_out:
-                    loss = loss + nn.CrossEntropyLoss()(out, label)
+                    loss = loss + nn.NLLLoss()(out, label)
 
                 if args.use_cuda:
                     loss = loss.cuda()
@@ -97,6 +97,16 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 val_acc = val_result['val_acc']
                 print('val_acc: {:6.4f}.'.format(val_acc))
 
+            if args.use_cuda:
+                torch.cuda.synchronize()
+
+            if (epoch + 1) % args.save_interval == 0:
+                save_path = os.path.join(args.save_dir, 'weight_stage' + str(1) + '_epoch_' + str(epoch) + '.pth')
+                torch.save(model.state_dict(), save_path)
+
+            if args.use_cuda:
+                torch.cuda.empty_cache()
+
     for epoch in range(args.start_epoch2, args.epoch_num2):
 
         cur_step = 0
@@ -122,10 +132,10 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
             leaves_out, final_out = model(image)
 
-            loss = nn.CrossEntropyLoss()(final_out, label)
+            loss = nn.NLLLoss()(final_out, label)
 
             for out in leaves_out:
-                loss = loss + nn.CrossEntropyLoss()(out, label)
+                loss = loss + nn.NLLLoss()(out, label)
 
             if args.use_cuda:
                 loss = loss.cuda()
@@ -161,11 +171,11 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
             val_acc = val_result['val_acc']
             print('val_acc: {:6.4f}.'.format(val_acc))
 
-        save_path = os.path.join(args.save_dir, 'weight_epoch_' + str(epoch) + '.pth')
-
         if args.use_cuda:
             torch.cuda.synchronize()
 
+        if (epoch + 1) % args.save_interval == 0:
+            save_path = os.path.join(args.save_dir, 'weight_stage' + str(2) + '_epoch_' + str(epoch) + '.pth')
         torch.save(model.state_dict(), save_path)
 
         if args.use_cuda:

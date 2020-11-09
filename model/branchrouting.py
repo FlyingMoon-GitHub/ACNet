@@ -8,7 +8,7 @@ from model.gcblock import *
 
 
 class BranchRoutingModule(nn.Module):
-    def __init__(self, in_channels=512):
+    def __init__(self, in_channels=512, epsilon=1e-12):
         super(BranchRoutingModule, self).__init__()
 
         self.conv1 = nn.Conv2d(in_channels, in_channels, kernel_size=1)
@@ -17,7 +17,7 @@ class BranchRoutingModule(nn.Module):
         self.fc = nn.Linear(in_channels, 1)
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x + 1e-12)
+        self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x + epsilon)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):

@@ -17,6 +17,7 @@ class LabelPredictionModule(nn.Module):
 
         self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
         self.signedsqrt = lambda x: torch.sign(x) * torch.sqrt(torch.sign(x) * x + 1e-12)
+        self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         feature = self.bn(x)
@@ -28,5 +29,6 @@ class LabelPredictionModule(nn.Module):
         feature = feature.view(feature.size(0), -1)
 
         out = self.fc(feature)
+        out = self.softmax(out)
 
         return out

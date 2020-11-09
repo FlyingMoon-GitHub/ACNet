@@ -5,6 +5,7 @@ from torchvision.models import *
 
 from util.weight_init import *
 
+
 def getBackbone(backbone_name, pretrained=True):
     base_backbone = eval(backbone_name)(pretrained=pretrained)
     all_base_modules = [m for m in base_backbone.children()]

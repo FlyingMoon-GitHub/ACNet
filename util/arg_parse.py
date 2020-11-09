@@ -19,6 +19,15 @@ def getArgs():
     parser.add_argument('--anno_dir', dest='anno_dir',
                         default='annos', type=str)
 
+    parser.add_argument('--savepoint_file', dest='savepoint_file',
+                        default=None, type=str)
+    parser.add_argument('--save_dir', dest='save_dir',
+                        default=os.path.join('.', 'checkpoint'), type=str)
+    parser.add_argument('--log_dir', dest='log_dir',
+                        default=os.path.join('.', 'log'), type=str)
+    parser.add_argument('--save_interval', dest='save_interval',
+                        default=5, type=int)
+
     parser.add_argument('--backbone', dest='backbone',
                         default='resnet50', type=str)
     parser.add_argument('--type', dest='type',
@@ -80,13 +89,6 @@ def getArgs():
 
     parser.add_argument('--use_cuda', dest='use_cuda',
                         default=torch.cuda.is_available(), type=bool)
-
-    parser.add_argument('--savepoint_file', dest='savepoint_file',
-                        default=None, type=str)
-    parser.add_argument('--save_dir', dest='save_dir',
-                        default=os.path.join('.', 'checkpoint'), type=str)
-    parser.add_argument('--log_dir', dest='log_dir',
-                        default=os.path.join('.', 'log'), type=str)
 
     # LACK OF TRANSFORMATION-RELATED ARGUMENTS
 
