@@ -176,7 +176,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
         if (epoch + 1) % args.save_interval == 0:
             save_path = os.path.join(args.save_dir, 'weight_stage' + str(2) + '_epoch_' + str(epoch) + '.pth')
-        torch.save(model.state_dict(), save_path)
+            torch.save(model.state_dict(), save_path)
 
         if args.use_cuda:
             torch.cuda.empty_cache()
