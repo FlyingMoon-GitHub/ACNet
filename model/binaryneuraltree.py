@@ -97,6 +97,6 @@ class BinaryNeuralTree(nn.Module):
 
         leaves_out = tuple((self.logs[i](leaves_out[i]) for i in range(int(pow(2, self.tree_height - 1)))))
 
-        final_out = self.logs[-1](final_out)
+        final_out = self.logs[int(pow(2, self.tree_height - 1))](final_out)
 
         return leaves_out, final_out
