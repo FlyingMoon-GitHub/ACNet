@@ -13,7 +13,7 @@ class BinaryNeuralTree(nn.Module):
     def __init__(self, class_num, tree_height=3, in_channels=512):
         super(BinaryNeuralTree, self).__init__()
 
-        assert tree_height >= 1
+        assert tree_height > 1
 
         self.class_num = class_num
         self.tree_height = tree_height
