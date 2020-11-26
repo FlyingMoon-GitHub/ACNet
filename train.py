@@ -9,6 +9,7 @@ from func.train_model import *
 from model.acnet import *
 from util.arg_parse import *
 from util.config import *
+from util.lr_lambda import *
 from util.weight_init import *
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
@@ -79,7 +80,7 @@ if __name__ == '__main__':
         optimizer1 = optim.SGD(model.tree.parameters(), lr=args.learning_rate1,
                                momentum=args.momentum1, weight_decay=args.weight_decay1)
 
-    learning_rate_scheduler1 = lr_scheduler.StepLR(optimizer1, step_size=args.decay_step1, gamma=args.decay_gamma1)
+    learning_rate_scheduler1 = lr_scheduler.LambdaLR(optimizer1, lr_lambda=lambda x: lr_lambda1(x, args))
 
     optimizer2 = None
     if args.use_cuda:
@@ -89,7 +90,7 @@ if __name__ == '__main__':
         optimizer2 = optim.SGD(model.parameters(), lr=args.learning_rate2,
                                momentum=args.momentum2, weight_decay=args.weight_decay2)
 
-    learning_rate_scheduler2 = lr_scheduler.StepLR(optimizer2, step_size=args.decay_step2, gamma=args.decay_gamma2)
+    learning_rate_scheduler2 = lr_scheduler.LambdaLR(optimizer2, lr_lambda=lambda x: lr_lambda2(x, args))
 
     train(args=args,
           model=model,
