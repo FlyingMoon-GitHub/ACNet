@@ -101,7 +101,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 torch.cuda.synchronize()
 
             if (epoch + 1) % args.save_interval == 0:
-                save_path = os.path.join(args.save_dir, 'weight_stage' + str(1) + '_epoch_' + str(epoch) + '.pth')
+                save_path = os.path.join(args.save_dir, 'weight_stage' + str(1) + '_epoch' + str(epoch) + '.pth')
                 torch.save(model.state_dict(), save_path)
 
             if args.use_cuda:
@@ -174,7 +174,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 torch.cuda.synchronize()
 
             if (epoch + 1) % args.save_interval == 0:
-                save_path = os.path.join(args.save_dir, 'weight_stage' + str(2) + '_epoch_' + str(epoch) + '.pth')
+                save_path = os.path.join(args.save_dir, 'weight_stage' + str(2) + '_epoch' + str(epoch) + '.pth')
                 torch.save(model.state_dict(), save_path)
 
             if args.use_cuda:
