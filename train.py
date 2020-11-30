@@ -61,6 +61,7 @@ if __name__ == '__main__':
         model_dict.update({k.replace('module.', ''): v for k, v in torch.load(args.savepoint_file).items()})
         model.load_state_dict(model_dict)
     else:
+        model.aux_conv.apply(weightInit)
         model.tree.apply(weightInit)
 
     if args.use_cuda:
@@ -74,10 +75,10 @@ if __name__ == '__main__':
 
     optimizer1 = None
     if args.use_cuda:
-        optimizer1 = optim.SGD(model.module.tree.parameters(), lr=args.learning_rate1,
+        optimizer1 = optim.SGD([*model.module.aux_conv.parameters(), *model.module.tree.parameters()], lr=args.learning_rate1,
                                momentum=args.momentum1, weight_decay=args.weight_decay1)
     else:
-        optimizer1 = optim.SGD(model.tree.parameters(), lr=args.learning_rate1,
+        optimizer1 = optim.SGD([*model.aux_conv.parameters(), *model.tree.parameters()], lr=args.learning_rate1,
                                momentum=args.momentum1, weight_decay=args.weight_decay1)
 
     learning_rate_scheduler1 = lr_scheduler.LambdaLR(optimizer1, lr_lambda=lambda x: lr_lambda1(x, args))
