@@ -69,8 +69,12 @@ if __name__ == '__main__':
         model = nn.DataParallel(model, device_ids=gpu_ids)
         model.to(first_gpu_device)
 
-    # model.summary()
-    model.saveGraph()
+    if args.use_cuda:
+        # model.summary()
+        model.module.saveGraph()
+    else:
+        # model.summary()
+        model.saveGraph()
 
     optimizer1 = None
     if args.use_cuda:

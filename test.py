@@ -38,13 +38,6 @@ if __name__ == '__main__':
 
     model = ACNet(model_config)
 
-    if args.use_cuda:
-        gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
-        first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
-
-        model = nn.DataParallel(model, device_ids=gpu_ids)
-        model.to(first_gpu_device)
-
     if args.savepoint_file:
         model_dict = model.state_dict()
         model_dict.update({k.replace('module.', ''): v for k, v in torch.load(args.savepoint_file).items()})
@@ -53,12 +46,18 @@ if __name__ == '__main__':
         model.apply(weightInit)
 
     if args.use_cuda:
-        model = model.cuda()
+        gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
+        first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
 
-    # model.summary()
+        model = nn.DataParallel(model, device_ids=gpu_ids)
+        model.to(first_gpu_device)
 
     if args.use_cuda:
-        model = nn.DataParallel(model)
+        # model.module.summary()
+        pass
+    else:
+        # model.summary()
+        pass
 
     test_result = test(args, model=model, dataloader=test_dataloader, type='test')
 
