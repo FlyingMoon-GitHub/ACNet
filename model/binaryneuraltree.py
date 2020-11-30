@@ -41,10 +41,12 @@ class BinaryNeuralTree(nn.Module):
         for i in range(self.tree_height - 1):
             for j in range(int(pow(2, i + 1))):
                 if j % 2:
-                    self.__setattr__('attention_transformer' + str(cur), nn.Sequential(*[AttentionTransformer()]))
+                    self.__setattr__('attention_transformer' + str(cur),
+                                     nn.Sequential(*[AttentionTransformer(in_channels=self.in_channels)]))
                 else:
                     self.__setattr__('attention_transformer' + str(cur),
-                                     nn.Sequential(*[AttentionTransformer(), AttentionTransformer()]))
+                                     nn.Sequential(*[AttentionTransformer(in_channels=self.in_channels),
+                                                     AttentionTransformer(in_channels=self.in_channels)]))
                 structure[i][j] = self.__getattr__('attention_transformer' + str(cur))
                 cur += 1
 
@@ -54,7 +56,8 @@ class BinaryNeuralTree(nn.Module):
         structure = [None] * int(pow(2, self.tree_height - 1))
         cur = 0
         for i in range(int(pow(2, self.tree_height - 1))):
-            self.__setattr__('label_prediction_module' + str(cur), LabelPredictionModule(class_num=self.class_num))
+            self.__setattr__('label_prediction_module' + str(cur),
+                             LabelPredictionModule(class_num=self.class_num, in_channels=self.in_channels))
             structure[i] = self.__getattr__('label_prediction_module' + str(cur))
             cur += 1
 

@@ -32,8 +32,8 @@ def getArgs():
                         default='resnet50', type=str)
     parser.add_argument('--aux_conv_in', dest='aux_conv_in',
                         default=0, type=int)
-    parser.add_argument('--aux_conv_out', dest='aux_conv_out',
-                        default=0, type=int)
+    parser.add_argument('--tree_in', dest='tree_in',
+                        default=512, type=int)
     parser.add_argument('--type', dest='type',
                         default='val', type=str)
     parser.add_argument('--class_num', dest='class_num',

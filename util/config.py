@@ -33,7 +33,7 @@ def getModelConfig(args, type):
 
     config['backbone'] = args.backbone
     config['aux_conv_in'] = args.aux_conv_in
-    config['aux_conv_out'] = args.aux_conv_out
+    config['tree_in'] = args.tree_in
     config['pretrained'] = (args.savepoint_file is None)
     config['class_num'] = args.class_num
     config['target_size'] = args.target_size

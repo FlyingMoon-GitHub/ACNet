@@ -16,6 +16,8 @@ class ACNet(nn.Module):
 
         self.target_size = (3, config['target_size'], config['target_size'])
         self.class_num = config['class_num']
+        self.aux_conv_in = config['aux_conv_in']
+        self.tree_in = config['tree_in']
         self.use_cuda = config['use_cuda']
         self.log_dir = config['log_dir']
         self.tree_height = config['tree_height']
@@ -23,12 +25,12 @@ class ACNet(nn.Module):
         self.pretrained = config['pretrained']
 
         self.backbone = getBackbone(config['backbone'], pretrained=self.pretrained)
-        self.aux_conv = self._aux_conv(config['aux_conv_in'], config['aux_conv_out'])
-        self.tree = BinaryNeuralTree(class_num=self.class_num, tree_height=self.tree_height)
+        self.aux_conv = self._aux_conv(self.aux_conv_in, self.tree_in)
+        self.tree = BinaryNeuralTree(class_num=self.class_num, tree_height=self.tree_height, in_channels=self.tree_in)
 
     def _aux_conv(self, aux_conv_in, aux_conv_out):
         layers = []
-        if aux_conv_out > 0:
+        if aux_conv_in > 0:
             extra_conv = nn.Conv2d(in_channels=aux_conv_in, out_channels=aux_conv_out, kernel_size=1)
             extra_conv.apply(weightInit)
             layers.append(extra_conv)
