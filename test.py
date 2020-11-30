@@ -11,8 +11,6 @@ from util.arg_parse import *
 from util.config import *
 from util.weight_init import *
 
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-
 torch.autograd.set_detect_anomaly(True)
 
 if __name__ == '__main__':
@@ -41,7 +39,11 @@ if __name__ == '__main__':
     model = ACNet(model_config)
 
     if args.use_cuda:
-        model = model.cuda()
+        gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
+        first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
+
+        model = nn.DataParallel(model, device_ids=gpu_ids)
+        model.to(first_gpu_device)
 
     if args.savepoint_file:
         model_dict = model.state_dict()
