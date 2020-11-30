@@ -23,10 +23,21 @@ class ACNet(nn.Module):
         self.pretrained = config['pretrained']
 
         self.backbone = getBackbone(config['backbone'], pretrained=self.pretrained)
+        self.aux_conv = self._aux_conv(config['aux_conv_in'], config['aux_conv_out'])
         self.tree = BinaryNeuralTree(class_num=self.class_num, tree_height=self.tree_height)
+
+    def _aux_conv(self, aux_conv_in, aux_conv_out):
+        layers = []
+        if aux_conv_out > 0:
+            extra_conv = nn.Conv2d(in_channels=aux_conv_in, out_channels=aux_conv_out, kernel_size=1)
+            extra_conv.apply(weightInit)
+            layers.append(extra_conv)
+            layers.append(nn.ReLU())
+        return nn.Sequential(*layers)
 
     def forward(self, x):
         init_feature = self.backbone(x)
+        init_feature = self.aux_conv(init_feature)
 
         leaves_out, final_out = self.tree(init_feature)
 

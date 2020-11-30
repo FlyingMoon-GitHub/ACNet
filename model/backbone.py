@@ -22,10 +22,6 @@ def getBackbone(backbone_name, pretrained=True):
         backbone = feature_extractor[0:35]
     elif backbone_name in ['resnet50', 'resnet101']:
         layers = all_base_modules[:-3]
-        extra_conv = nn.Conv2d(in_channels=1024, out_channels=512, kernel_size=1)
-        extra_conv.apply(weightInit)
-        layers.append(extra_conv)
-        layers.append(nn.ReLU())
         backbone = nn.Sequential(*layers)
 
     return backbone

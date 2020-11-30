@@ -32,11 +32,12 @@ def getModelConfig(args, type):
     config = {}
 
     config['backbone'] = args.backbone
+    config['aux_conv_in'] = args.aux_conv_in
+    config['aux_conv_out'] = args.aux_conv_out
     config['pretrained'] = (args.savepoint_file is None)
     config['class_num'] = args.class_num
     config['target_size'] = args.target_size
     config['tree_height'] = args.tree_height
-
 
     config['use_cuda'] = args.use_cuda
     config['log_dir'] = args.log_dir
