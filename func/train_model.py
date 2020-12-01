@@ -12,6 +12,9 @@ from func.test_model import *
 def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
     loss_records = []
 
+    gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
+    first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
+
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
 
@@ -48,8 +51,8 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 image, label = data
 
                 if args.use_cuda:
-                    image = Variable(image.cuda())
-                    label = Variable(label.cuda()).long()
+                    image = Variable(image.to(first_gpu_device))
+                    label = Variable(label.to(first_gpu_device)).long()
                 else:
                     image = Variable(image)
                     label = Variable(label).long()
@@ -64,7 +67,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                     loss = loss + nn.NLLLoss()(out, label)
 
                 if args.use_cuda:
-                    loss = loss.cuda()
+                    loss = loss.to(first_gpu_device)
 
                 loss.backward()
 
@@ -121,8 +124,8 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                 image, label = data
 
                 if args.use_cuda:
-                    image = Variable(image.cuda())
-                    label = Variable(label.cuda()).long()
+                    image = Variable(image.to(first_gpu_device))
+                    label = Variable(label.to(first_gpu_device)).long()
                 else:
                     image = Variable(image)
                     label = Variable(label).long()
@@ -137,7 +140,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
                     loss = loss + nn.NLLLoss()(out, label)
 
                 if args.use_cuda:
-                    loss = loss.cuda()
+                    loss = loss.to(first_gpu_device)
 
                 loss.backward()
 
