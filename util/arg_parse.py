@@ -100,4 +100,6 @@ def getArgs():
 
     args = parser.parse_args()
 
+    args.use_cuda = args.use_cuda and torch.cuda.is_available()
+
     return args

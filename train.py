@@ -23,8 +23,6 @@ if __name__ == '__main__':
     args.log_dir = os.path.join('.', 'log', args.dataset)
     # CUSTOM SETTINGS END
 
-    args.use_cuda = args.use_cuda and torch.cuda.is_available()
-
     assert args.type in ['train', 'val']
 
     dataloaders = {}
