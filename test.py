@@ -24,7 +24,7 @@ if __name__ == '__main__':
     assert args.type in ['test']
 
     if args.use_cuda:
-        os.environ['CUDA_VISIBLE_DEVICES'] = args.args.gpu_ids.strip()
+        os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_ids.strip()
 
     test_data_config = getDatasetConfig(args, 'test')
     test_dataset = MyDataset(test_data_config)

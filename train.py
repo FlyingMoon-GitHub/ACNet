@@ -26,7 +26,7 @@ if __name__ == '__main__':
     assert args.type in ['train', 'val']
 
     if args.use_cuda:
-        os.environ['CUDA_VISIBLE_DEVICES'] = args.args.gpu_ids.strip()
+        os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_ids.strip()
 
     dataloaders = {}
 
