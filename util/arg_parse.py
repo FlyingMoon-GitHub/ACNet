@@ -29,7 +29,7 @@ def getArgs():
                         default=5, type=int)
 
     parser.add_argument('--backbone', dest='backbone',
-                        default='vgg16', type=str)
+                        default='resnet50', type=str)
     parser.add_argument('--aux_conv_in', dest='aux_conv_in',
                         default=0, type=int)
     parser.add_argument('--tree_in', dest='tree_in',
