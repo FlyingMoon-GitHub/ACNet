@@ -6,6 +6,7 @@ import torch
 from torch import nn
 from torch.autograd import Variable
 
+from util.loss import *
 
 def test(args, model, dataloader, type):
     assert type in ['val', 'test']
@@ -22,6 +23,8 @@ def test(args, model, dataloader, type):
 
     class_num = args.class_num
     confusion_matrix = [[0] * class_num for _ in range(class_num)]
+
+    loss_func = LossFunction()
 
     model.train(False)
 
@@ -42,12 +45,9 @@ def test(args, model, dataloader, type):
                 image = Variable(image)
                 label = Variable(label).long()
 
-            leaves_out, final_out = model(image)
+            leaves_out, final_out, final_features = model(image)
 
-            loss = nn.NLLLoss()(final_out, label)
-
-            for out in leaves_out:
-                loss = loss + nn.NLLLoss()(out, label)
+            loss = loss_func(leaves_out, final_out, label, final_features)
 
             if args.use_cuda:
                 loss = loss.cuda()

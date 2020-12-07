@@ -41,9 +41,9 @@ class ACNet(nn.Module):
         init_feature = self.backbone(x)
         init_feature = self.aux_conv(init_feature)
 
-        leaves_out, final_out = self.tree(init_feature)
+        leaves_out, final_out, final_features = self.tree(init_feature)
 
-        return leaves_out, final_out
+        return leaves_out, final_out, final_features
 
     def summary(self):
         summary(self, [self.target_size], device="cuda" if self.use_cuda else "cpu")

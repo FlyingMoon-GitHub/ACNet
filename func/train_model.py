@@ -8,6 +8,8 @@ from torch.autograd import Variable
 
 from func.test_model import *
 
+from util.loss import *
+
 
 def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
     loss_records = []
@@ -23,6 +25,8 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
     if savepoint > train_epoch_step:
         savepoint = train_epoch_step
         checkpoint = savepoint
+
+    loss_func = LossFunction()
 
     last_time, cur_time = None, datetime.datetime.now()
 
@@ -56,12 +60,9 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 optimizers[0].zero_grad()
 
-                leaves_out, final_out = model(image)
+                leaves_out, final_out, final_features = model(image)
 
-                loss = nn.NLLLoss()(final_out, label)
-
-                for out in leaves_out:
-                    loss = loss + nn.NLLLoss()(out, label)
+                loss = loss_func(leaves_out, final_out, label, final_features)
 
                 if args.use_cuda:
                     loss = loss.cuda()
@@ -129,12 +130,9 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 optimizers[1].zero_grad()
 
-                leaves_out, final_out = model(image)
+                leaves_out, final_out, final_features = model(image)
 
-                loss = nn.NLLLoss()(final_out, label)
-
-                for out in leaves_out:
-                    loss = loss + nn.NLLLoss()(out, label)
+                loss = loss_func(leaves_out, final_out, label, final_features)
 
                 if args.use_cuda:
                     loss = loss.cuda()
