@@ -21,7 +21,7 @@ def getBackbone(backbone_name, pretrained=True):
         feature_extractor = all_base_modules[0]
         backbone = feature_extractor[0:35]
     elif backbone_name in ['resnet50', 'resnet101']:
-        layers = all_base_modules[:-4]
+        layers = all_base_modules[:-3]
         backbone = nn.Sequential(*layers)
 
     return backbone
