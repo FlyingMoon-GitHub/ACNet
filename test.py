@@ -23,6 +23,9 @@ if __name__ == '__main__':
 
     assert args.type in ['test']
 
+    if args.use_cuda:
+        os.environ['CUDA_VISIBLE_DEVICES'] = args.args.gpu_ids.strip()
+
     test_data_config = getDatasetConfig(args, 'test')
     test_dataset = MyDataset(test_data_config)
     test_dataloader = DataLoader(dataset=test_dataset,
@@ -44,18 +47,12 @@ if __name__ == '__main__':
         model.apply(weightInit)
 
     if args.use_cuda:
-        gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
-        first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
+        model = model.cuda()
 
-        model = nn.DataParallel(model, device_ids=gpu_ids)
-        model.to(first_gpu_device)
+    # model.summary()
 
     if args.use_cuda:
-        # model.module.summary()
-        pass
-    else:
-        # model.summary()
-        pass
+        model = nn.DataParallel(model)
 
     test_result = test(args, model=model, dataloader=test_dataloader, type='test')
 

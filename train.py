@@ -25,6 +25,9 @@ if __name__ == '__main__':
 
     assert args.type in ['train', 'val']
 
+    if args.use_cuda:
+        os.environ['CUDA_VISIBLE_DEVICES'] = args.args.gpu_ids.strip()
+
     dataloaders = {}
 
     train_data_config = getDatasetConfig(args, 'train')
@@ -61,18 +64,13 @@ if __name__ == '__main__':
         model.tree.apply(weightInit)
 
     if args.use_cuda:
-        gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
-        first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
+        model = model.cuda()
 
-        model = nn.DataParallel(model, device_ids=gpu_ids)
-        model.to(first_gpu_device)
+    # model.summary()
+    model.saveGraph()
 
     if args.use_cuda:
-        # model.summary()
-        model.module.saveGraph()
-    else:
-        # model.summary()
-        model.saveGraph()
+        model = nn.DataParallel(model)
 
     optimizer1 = None
     if args.use_cuda:

@@ -14,9 +14,6 @@ def test(args, model, dataloader, type):
 
     loss_records = []
 
-    gpu_ids = [int(i) for i in args.gpu_ids.split(',')]
-    first_gpu_device = torch.device('cuda:' + str(gpu_ids[0]))
-
     batch_size = dataloader.batch_size
     epoch_step = len(dataloader)
     data_num = len(dataloader.dataset)
@@ -39,8 +36,8 @@ def test(args, model, dataloader, type):
             image, label = data
 
             if args.use_cuda:
-                image = Variable(image.to(first_gpu_device))
-                label = Variable(label.to(first_gpu_device)).long()
+                image = Variable(image.cuda())
+                label = Variable(label.cuda()).long()
             else:
                 image = Variable(image)
                 label = Variable(label).long()
@@ -53,7 +50,7 @@ def test(args, model, dataloader, type):
                 loss = loss + nn.NLLLoss()(out, label)
 
             if args.use_cuda:
-                loss = loss.to(first_gpu_device)
+                loss = loss.cuda()
 
             loss_records.append(loss.detach().item())
 
