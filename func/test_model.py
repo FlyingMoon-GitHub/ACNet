@@ -24,7 +24,7 @@ def test(args, model, dataloader, type):
     class_num = args.class_num
     confusion_matrix = [[0] * class_num for _ in range(class_num)]
 
-    loss_func = LossFunction()
+    loss_func = MyLossFunction()
 
     model.train(False)
 

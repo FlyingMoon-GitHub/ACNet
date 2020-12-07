@@ -3,7 +3,7 @@
 from torch import nn
 
 
-class LossFunction(object):
+class MyLossFunction(object):
     def __init__(self):
         pass
 

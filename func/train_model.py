@@ -26,7 +26,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
         savepoint = train_epoch_step
         checkpoint = savepoint
 
-    loss_func = LossFunction()
+    loss_func = MyLossFunction()
 
     last_time, cur_time = None, datetime.datetime.now()
 
