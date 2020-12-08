@@ -26,7 +26,8 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
         savepoint = train_epoch_step
         checkpoint = savepoint
 
-    loss_func = MyLossFunction()
+    lambdas = (args.lambda_0, args.lambda_1, args.lambda_2)
+    loss_func = MyLossFunction(lambdas)
 
     last_time, cur_time = None, datetime.datetime.now()
 
@@ -62,7 +63,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 leaves_out, final_out, final_features = model(image)
 
-                loss = loss_func(leaves_out, final_out, label, final_features)
+                loss = loss_func((leaves_out, final_out, final_features), label)
 
                 if args.use_cuda:
                     loss = loss.cuda()
@@ -132,7 +133,7 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
                 leaves_out, final_out, final_features = model(image)
 
-                loss = loss_func(leaves_out, final_out, label, final_features)
+                loss = loss_func((leaves_out, final_out, final_features), label)
 
                 if args.use_cuda:
                     loss = loss.cuda()

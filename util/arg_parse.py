@@ -84,6 +84,13 @@ def getArgs():
     parser.add_argument('--weight_decay2', dest='weight_decay2',
                         default=5e-4, type=float)
 
+    parser.add_argument('--lambda_0', dest='lambda_0',
+                        default=1, type=float)
+    parser.add_argument('--lambda_1', dest='lambda_1',
+                        default=1, type=float)
+    parser.add_argument('--lambda_2', dest='lambda_2',
+                        default=0.5, type=float)
+
     parser.add_argument('--train_num_workers', dest='train_num_workers',
                         default=0, type=int)
     parser.add_argument('--val_num_workers', dest='val_num_workers',
