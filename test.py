@@ -18,11 +18,6 @@ if __name__ == '__main__':
 
     assert args.type in ['test']
 
-    # CUSTOM SETTINGS
-    args.save_dir = os.path.join('.', 'checkpoint', args.dataset)
-    args.log_dir = os.path.join('.', 'log', args.dataset)
-    # CUSTOM SETTINGS END
-
     test_data_config = getDatasetConfig(args, 'test')
     test_dataset = MyDataset(test_data_config)
     test_dataloader = DataLoader(dataset=test_dataset,

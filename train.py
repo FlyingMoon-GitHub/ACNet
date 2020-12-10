@@ -18,11 +18,6 @@ if __name__ == '__main__':
 
     args = getArgs()
 
-    # CUSTOM SETTINGS
-    args.save_dir = os.path.join('.', 'checkpoint', args.dataset)
-    args.log_dir = os.path.join('.', 'log', args.dataset)
-    # CUSTOM SETTINGS END
-
     assert args.type in ['train', 'val']
 
     dataloaders = {}
