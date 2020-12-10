@@ -103,6 +103,11 @@ def getArgs():
     parser.add_argument('--gpu_ids', dest='gpu_ids',
                         default='0', type=str)
 
+    parser.add_argument('--summary', dest='summary',
+                        default=False, type=bool)
+    parser.add_argument('--save_graph', dest='save_graph',
+                        default=False, type=bool)
+
     # LACK OF TRANSFORMATION-RELATED ARGUMENTS
 
     args = parser.parse_args()

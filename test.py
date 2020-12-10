@@ -49,7 +49,8 @@ if __name__ == '__main__':
     if args.use_cuda:
         model = model.cuda()
 
-    # model.summary()
+    if args.summary:
+        model.summary()
 
     if args.use_cuda:
         model = nn.DataParallel(model)

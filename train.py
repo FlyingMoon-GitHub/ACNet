@@ -66,8 +66,10 @@ if __name__ == '__main__':
     if args.use_cuda:
         model = model.cuda()
 
-    # model.summary()
-    model.saveGraph()
+    if args.summary:
+        model.summary()
+    if args.save_graph:
+        model.saveGraph()
 
     if args.use_cuda:
         model = nn.DataParallel(model)
