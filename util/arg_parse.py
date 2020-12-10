@@ -99,7 +99,7 @@ def getArgs():
                         default=0, type=int)
 
     parser.add_argument('--use_cuda', dest='use_cuda',
-                        default=torch.cuda.is_available(), type=bool)
+                        default=True, type=bool)
     parser.add_argument('--gpu_ids', dest='gpu_ids',
                         default='0', type=str)
 
@@ -111,6 +111,8 @@ def getArgs():
     # LACK OF TRANSFORMATION-RELATED ARGUMENTS
 
     args = parser.parse_args()
+
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_ids.strip()
 
     args.use_cuda = args.use_cuda and torch.cuda.is_available()
 

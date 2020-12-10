@@ -14,12 +14,14 @@ from util.weight_init import *
 
 torch.autograd.set_detect_anomaly(True)
 
-args = getArgs()
-
-if args.use_cuda:
-    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_ids.strip()
-
 if __name__ == '__main__':
+
+    args = getArgs()
+
+    # CUSTOM SETTINGS
+    args.save_dir = os.path.join('.', 'checkpoint', args.dataset)
+    args.log_dir = os.path.join('.', 'log', args.dataset)
+    # CUSTOM SETTINGS END
 
     assert args.type in ['train', 'val']
 
