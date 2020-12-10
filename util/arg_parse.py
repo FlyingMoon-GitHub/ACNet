@@ -116,4 +116,7 @@ def getArgs():
 
     args.use_cuda = args.use_cuda and torch.cuda.is_available()
 
+    args.save_dir = os.path.join(args.save_dir, args.dataset)
+    args.log_dir = os.path.join(args.log_dir, args.dataset)
+
     return args
