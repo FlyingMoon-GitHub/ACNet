@@ -10,8 +10,6 @@ def getBackbone(backbone_name, pretrained=True):
     base_backbone = eval(backbone_name)(pretrained=pretrained)
     all_base_modules = [m for m in base_backbone.children()]
 
-    assert backbone_name in ['vgg16', 'vgg19', 'resnet50', 'resnet101']
-
     backbone = None
 
     if backbone_name == 'vgg16':
@@ -23,5 +21,8 @@ def getBackbone(backbone_name, pretrained=True):
     elif backbone_name in ['resnet50', 'resnet101']:
         layers = all_base_modules[:-3]
         backbone = nn.Sequential(*layers)
+    else:
+        print(backbone_name)
+        raise NotImplementedError()
 
     return backbone
