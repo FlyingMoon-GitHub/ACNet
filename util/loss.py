@@ -27,7 +27,7 @@ class MyLossFunction(object):
 
             dc_loss = torch.sum(x, dim=1)
             dc_loss = nn.AdaptiveMaxPool2d((1, 1))(dc_loss)
-            dc_loss = torch.mean(dc_loss)
+            dc_loss = -torch.mean(dc_loss)
 
             loss = loss + lambda_2 * dc_loss
 

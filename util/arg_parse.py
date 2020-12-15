@@ -108,7 +108,7 @@ def getArgs():
     parser.add_argument('--test_img_path', dest='test_img_path',
                         default=None, type=str)
     parser.add_argument('--test_branches', dest='test_branches',
-                        default='0', type=str)
+                        default='0,1,2,3', type=str)
     parser.add_argument('--test_save_path', dest='test_save_path',
                         default=os.path.join('.', 'vis'), type=str)
 
