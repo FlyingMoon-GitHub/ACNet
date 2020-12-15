@@ -7,9 +7,6 @@ import torch
 def getArgs():
     parser = argparse.ArgumentParser()
 
-    '''
-    Dataset to be set
-    '''
     parser.add_argument('--root', dest='root_path',
                         default=os.path.join('.', 'data'), type=str)
     parser.add_argument('--dataset', dest='dataset',
@@ -18,6 +15,8 @@ def getArgs():
                         default='images' , type=str)
     parser.add_argument('--anno_dir', dest='anno_dir',
                         default='annos', type=str)
+    parser.add_argument('--class_num', dest='class_num',
+                        default=200, type=int)
 
     parser.add_argument('--savepoint_file', dest='savepoint_file',
                         default=None, type=str)
@@ -36,8 +35,6 @@ def getArgs():
                         default=1024, type=int)
     parser.add_argument('--type', dest='type',
                         default='val', type=str)
-    parser.add_argument('--class_num', dest='class_num',
-                        default=200, type=int)
     parser.add_argument('--target_size', dest='target_size',
                         default=448, type=float)
     parser.add_argument('--tree_height', dest='tree_height',
@@ -107,6 +104,13 @@ def getArgs():
                         default=False, type=bool)
     parser.add_argument('--save_graph', dest='save_graph',
                         default=False, type=bool)
+
+    parser.add_argument('--test_img_path', dest='test_img_path',
+                        default=None, type=str)
+    parser.add_argument('--test_branches', dest='test_branches',
+                        default='all', type=str)
+    parser.add_argument('--test_save_path', dest='test_save_path',
+                        default=os.path.join('.', 'vis'), type=str)
 
     # LACK OF TRANSFORMATION-RELATED ARGUMENTS
 

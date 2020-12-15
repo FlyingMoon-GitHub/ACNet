@@ -46,6 +46,8 @@ if __name__ == '__main__':
 
     if args.use_cuda:
         model = nn.DataParallel(model)
+        if torch.cuda.device_count() > 1:
+            model = model.to(torch.device('cuda:0'))
 
     test_result = test(args, model=model, dataloader=test_dataloader, type='test')
 
