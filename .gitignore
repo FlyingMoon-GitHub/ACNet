@@ -4,3 +4,4 @@
 /checkpoint/**
 /log/**
 /runs/**
+/visualization.py
