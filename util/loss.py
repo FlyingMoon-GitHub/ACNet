@@ -42,7 +42,6 @@ class MyLossFunction(object):
         if lambda_3:
             x = concat_feature
             x = torch.transpose(x, 1, 2)
-
             x = x.reshape(f_shape[0], f_shape[2], f_shape[1], f_shape[3] * f_shape[4])
             x = nn.Softmax(dim=3)(x)
             x = x.reshape(f_shape[0], f_shape[2], f_shape[1], f_shape[3], f_shape[4])
