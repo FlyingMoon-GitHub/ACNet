@@ -10,12 +10,11 @@ class MyLossFunction(object):
         self.margin = margin
 
     def __call__(self, output, label):
-        # Cross Entropy Loss
-
         leaves_out, final_out, final_features = output
         lambda_0, lambda_1, lambda_2, lambda_3, lambda_4 = self.lambdas
         margin = self.margin
 
+        # Cross Entropy Loss
         loss = lambda_0 * nn.NLLLoss()(final_out, label)
 
         for out in leaves_out:
@@ -27,7 +26,7 @@ class MyLossFunction(object):
 
         f_shape = concat_feature.shape
 
-        # Intra Mutual-Channel Diversity Loss
+        # Intra-Branch Consistency Loss
         if lambda_2:
             x = concat_feature
             x = x.reshape(f_shape[0], f_shape[1], f_shape[2], f_shape[3] * f_shape[4])
@@ -36,11 +35,11 @@ class MyLossFunction(object):
 
             dc_loss = torch.sum(x, dim=2)
             dc_loss = nn.AdaptiveMaxPool2d((1, 1))(dc_loss)
-            dc_loss = -torch.mean(dc_loss)
+            dc_loss = torch.mean(dc_loss)
 
             loss = loss + lambda_2 * dc_loss
 
-        # Inter Mutual-Channel Diversity Loss
+        # Inter-Branch Diversity Loss
         if lambda_3:
             x = concat_feature
             x = torch.transpose(x, 1, 2)
