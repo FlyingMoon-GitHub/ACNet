@@ -90,7 +90,7 @@ def getArgs():
     parser.add_argument('--lambda_3', dest='lambda_3',
                         default=1, type=float)
     parser.add_argument('--lambda_4', dest='lambda_4',
-                        default=0.05, type=float)
+                        default=1, type=float)
     parser.add_argument('--margin', dest='margin',
                         default=0.05, type=float)
 
