@@ -91,6 +91,8 @@ def getArgs():
                         default=1, type=float)
     parser.add_argument('--lambda_4', dest='lambda_4',
                         default=0.05, type=float)
+    parser.add_argument('--margin', dest='margin',
+                        default=0.05, type=float)
 
     parser.add_argument('--train_num_workers', dest='train_num_workers',
                         default=0, type=int)
