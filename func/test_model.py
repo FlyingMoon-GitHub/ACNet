@@ -26,7 +26,8 @@ def test(args, model, dataloader, type):
     confusion_matrix = [[0] * class_num for _ in range(class_num)]
 
     lambdas = (args.lambda_0, args.lambda_1, args.lambda_2, args.lambda_3, args.lambda_4)
-    loss_func = MyLossFunction(lambdas)
+    margin = args.margin
+    loss_func = MyLossFunction(lambdas, margin)
 
     model.train(False)
 

@@ -5,14 +5,16 @@ from torch import nn
 
 
 class MyLossFunction(object):
-    def __init__(self, lambdas):
+    def __init__(self, lambdas, margin):
         self.lambdas = lambdas
+        self.margin = margin
 
     def __call__(self, output, label):
         # Cross Entropy Loss
 
         leaves_out, final_out, final_features = output
         lambda_0, lambda_1, lambda_2, lambda_3, lambda_4 = self.lambdas
+        margin = self.margin
 
         loss = lambda_0 * nn.NLLLoss()(final_out, label)
 

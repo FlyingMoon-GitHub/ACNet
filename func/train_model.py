@@ -27,7 +27,8 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
         checkpoint = savepoint
 
     lambdas = (args.lambda_0, args.lambda_1, args.lambda_2, args.lambda_3, args.lambda_4)
-    loss_func = MyLossFunction(lambdas)
+    margin = args.margin
+    loss_func = MyLossFunction(lambdas, margin)
 
     last_time, cur_time = None, datetime.datetime.now()
 
