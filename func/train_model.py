@@ -60,9 +60,14 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
             optimizers[0].zero_grad()
 
-            leaves_out, final_out, final_features = model(image)
+            leaves_out, final_out, final_features, penultimate_out = model(image)
 
-            loss = loss_func((leaves_out, final_out, final_features), label)
+            target = torch.ones([leaves_out[0].shape[0]])
+
+            if args.use_cuda:
+                target = target.cuda()
+
+            loss = loss_func((leaves_out, final_out, final_features, penultimate_out), label, target)
 
             if args.use_cuda:
                 loss = loss.cuda()
@@ -130,9 +135,14 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
 
             optimizers[1].zero_grad()
 
-            leaves_out, final_out, final_features = model(image)
+            leaves_out, final_out, final_features, penultimate_out = model(image)
 
-            loss = loss_func((leaves_out, final_out, final_features), label)
+            target = torch.ones([leaves_out[0].shape[0]])
+
+            if args.use_cuda:
+                target = target.cuda()
+
+            loss = loss_func((leaves_out, final_out, final_features, penultimate_out), label, target)
 
             if args.use_cuda:
                 loss = loss.cuda()

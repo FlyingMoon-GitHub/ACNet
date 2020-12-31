@@ -48,9 +48,14 @@ def test(args, model, dataloader, type):
                 image = Variable(image)
                 label = Variable(label).long()
 
-            leaves_out, final_out, final_features = model(image)
+            leaves_out, final_out, final_features, penultimate_out = model(image)
 
-            loss = loss_func((leaves_out, final_out, final_features), label)
+            target = torch.ones([leaves_out[0].shape[0]])
+
+            if args.use_cuda:
+                target = target.cuda()
+
+            loss = loss_func((leaves_out, final_out, final_features, penultimate_out), label, target)
 
             if args.use_cuda:
                 loss = loss.cuda()

@@ -94,14 +94,19 @@ class BinaryNeuralTree(nn.Module):
         leaves_out = [self.label_predictions[i](features[self.tree_height - 1][i]) for i in
                       range(int(pow(2, self.tree_height - 1)))]
 
+        penultimate_out = [self.label_predictions[i](features[self.tree_height - 2][i//2]) for i in
+                      range(int(pow(2, self.tree_height - 1)))]
+
         final_out = probs[self.tree_height - 2][0] * leaves_out[0]
         for i in range(1, int(pow(2, self.tree_height - 1))):
             final_out = final_out + probs[self.tree_height - 2][i] * leaves_out[i]
 
         leaves_out = tuple((self.logs[i](leaves_out[i]) for i in range(int(pow(2, self.tree_height - 1)))))
 
+        penultimate_out = tuple((self.logs[i](penultimate_out[i]) for i in range(int(pow(2, self.tree_height - 1)))))
+
         final_out = self.logs[int(pow(2, self.tree_height - 1))](final_out)
 
         final_features = tuple(features[self.tree_height - 1][i] for i in range(int(pow(2, self.tree_height - 1))))
 
-        return leaves_out, final_out, final_features
+        return leaves_out, final_out, final_features, penultimate_out

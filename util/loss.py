@@ -9,8 +9,8 @@ class MyLossFunction(object):
         self.lambdas = lambdas
         self.margin = margin
 
-    def __call__(self, output, label):
-        leaves_out, final_out, final_features = output
+    def __call__(self, output, label, target):
+        leaves_out, final_out, final_features, penultimate_out = output
         lambda_0, lambda_1, lambda_2, lambda_3, lambda_4 = self.lambdas
         margin = self.margin
 
@@ -54,8 +54,16 @@ class MyLossFunction(object):
             loss = loss + lambda_3 * dc_loss
 
         # Ranking Loss
-
         if lambda_4:
-            pass
+            len_out = len(leaves_out)
+
+            raw_leaves_out = tuple((torch.exp(leaves_out[i]) for i in range(len_out)))
+
+            raw_penultimate_out = tuple((torch.exp(penultimate_out[i]) for i in range(len_out)))
+
+            for i in range(len_out):
+                loss = loss + lambda_4 * nn.MarginRankingLoss(margin=margin)(
+                              raw_leaves_out[i][torch.arange(f_shape[0]), label],
+                              raw_penultimate_out[i][torch.arange(f_shape[0]), label], target)
 
         return loss
