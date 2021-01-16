@@ -62,7 +62,7 @@ class MyLossFunction(object):
             raw_penultimate_out = tuple((torch.exp(penultimate_out[i]) for i in range(len_out)))
 
             for out in penultimate_out:
-                loss = loss + lambda_1 * nn.NLLLoss()(out, label)
+                loss = loss + lambda_4 * nn.NLLLoss()(out, label)
 
             for i in range(len_out):
                 loss = loss + lambda_4 * nn.MarginRankingLoss(margin=margin)(
