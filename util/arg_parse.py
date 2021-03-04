@@ -9,7 +9,7 @@ def getArgs(ipython=False):
     parser = argparse.ArgumentParser()
 
     if ipython:
-        parser.add_argument("-f", dest='j_cfile', default="file.json", type=str)
+        parser.add_argument("-f", dest='j_cfile', type=str)
 
     parser.add_argument('--root', dest='root_path',
                         default=os.path.join('.', 'data'), type=str)
