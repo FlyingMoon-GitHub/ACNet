@@ -4,15 +4,19 @@ import argparse
 import os
 import torch
 
-def getArgs():
+
+def getArgs(ipython=False):
     parser = argparse.ArgumentParser()
+
+    if ipython:
+        parser.add_argument("-f", dest='j_cfile', default="file.json", type=str)
 
     parser.add_argument('--root', dest='root_path',
                         default=os.path.join('.', 'data'), type=str)
     parser.add_argument('--dataset', dest='dataset',
                         default='CUB-200-2011', type=str)
     parser.add_argument('--img_dir', dest='img_dir',
-                        default='images' , type=str)
+                        default='images', type=str)
     parser.add_argument('--anno_dir', dest='anno_dir',
                         default='annos', type=str)
     parser.add_argument('--class_num', dest='class_num',
