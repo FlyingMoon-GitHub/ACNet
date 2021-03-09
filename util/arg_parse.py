@@ -26,10 +26,15 @@ def getArgs(ipython=False):
                         default=None, type=str)
     parser.add_argument('--save_dir', dest='save_dir',
                         default=os.path.join('.', 'checkpoint'), type=str)
-    parser.add_argument('--log_dir', dest='log_dir',
-                        default=os.path.join('.', 'log'), type=str)
     parser.add_argument('--save_interval', dest='save_interval',
                         default=5, type=int)
+    parser.add_argument('--val_interval', dest='val_interval',
+                        default=5, type=int)
+    parser.add_argument('--log_dir', dest='log_dir',
+                        default=os.path.join('.', 'log'), type=str)
+    parser.add_argument('--log_file', dest='log_file',
+                        default='log.txt', type=str)
+
 
     parser.add_argument('--backbone', dest='backbone',
                         default='resnet50', type=str)

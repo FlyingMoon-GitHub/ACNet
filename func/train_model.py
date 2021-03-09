@@ -17,6 +17,13 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
     if not os.path.exists(args.save_dir):
         os.makedirs(args.save_dir)
 
+    if args.log_file:
+        if not os.path.exists(args.log_dir):
+            os.makedirs(args.log_dir)
+        with open(os.path.join(args.log_dir, args.log_file), 'a+') as log_file:
+            log_file.write(('-' * 5) + '\n')
+
+
     train_batch_size = dataloaders['train'].batch_size
     train_epoch_step = len(dataloaders['train'])
 
@@ -99,9 +106,16 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
               .format(epoch, args.start_epoch1, args.epoch_num1))
 
         if args.type == 'val':
-            val_result = test(args, model=model, dataloader=dataloaders['val'], type='val')
-            val_acc = val_result['val_acc']
-            print('val_acc: {:6.4f}.'.format(val_acc))
+            if (epoch + 1) % args.val_interval == 0:
+                val_result = test(args, model=model, dataloader=dataloaders['val'], type='val')
+                val_acc = val_result['val_acc']
+
+                val_acc_str = 'val_acc: {:6.4f}.'.format(val_acc)
+                print(val_acc_str)
+
+                if args.log_file:
+                    with open(os.path.join(args.log_dir, args.log_file), 'a+') as log_file:
+                        log_file.write('stage 1 ' + 'epoch ' + str(epoch) + ', ' + val_acc_str + '\n')
 
         if args.use_cuda:
             torch.cuda.synchronize()
@@ -174,9 +188,16 @@ def train(args, model, optimizers, learning_rate_schedulers, dataloaders):
               .format(epoch, args.start_epoch2, args.epoch_num2))
 
         if args.type == 'val':
-            val_result = test(args, model=model, dataloader=dataloaders['val'], type='val')
-            val_acc = val_result['val_acc']
-            print('val_acc: {:6.4f}.'.format(val_acc))
+            if (epoch + 1) % args.val_interval == 0:
+                val_result = test(args, model=model, dataloader=dataloaders['val'], type='val')
+                val_acc = val_result['val_acc']
+
+                val_acc_str = 'val_acc: {:6.4f}.'.format(val_acc)
+                print(val_acc_str)
+
+                if args.log_file:
+                    with open(os.path.join(args.log_dir, args.log_file), 'a+') as log_file:
+                        log_file.write('stage 2 ' + 'epoch ' + str(epoch) + ', ' + val_acc_str + '\n')
 
         if args.use_cuda:
             torch.cuda.synchronize()
