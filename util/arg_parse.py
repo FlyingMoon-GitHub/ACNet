@@ -35,7 +35,6 @@ def getArgs(ipython=False):
     parser.add_argument('--log_file', dest='log_file',
                         default='log.txt', type=str)
 
-
     parser.add_argument('--backbone', dest='backbone',
                         default='resnet50', type=str)
     parser.add_argument('--aux_conv_in', dest='aux_conv_in',
