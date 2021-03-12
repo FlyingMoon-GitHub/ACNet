@@ -20,53 +20,54 @@ class MyLossFunction(object):
         for out in leaves_out:
             loss = loss + lambda_1 * nn.NLLLoss()(out, label)
 
-        concat_feature = torch.unsqueeze(final_features[0], dim=1)
-        for f in final_features[1:]:
-            concat_feature = torch.cat([concat_feature, torch.unsqueeze(f, dim=1)], dim=1)
+        if final_features:
+            concat_feature = torch.unsqueeze(final_features[0], dim=1)
+            for f in final_features[1:]:
+                concat_feature = torch.cat([concat_feature, torch.unsqueeze(f, dim=1)], dim=1)
 
-        f_shape = concat_feature.shape
+            f_shape = concat_feature.shape
 
-        # Intra-Branch Consistency Loss
-        if lambda_2:
-            x = concat_feature
-            x = x.reshape(f_shape[0], f_shape[1], f_shape[2], f_shape[3] * f_shape[4])
-            x = nn.Softmax(dim=3)(x)
-            x = x.reshape(f_shape[0], f_shape[1], f_shape[2], f_shape[3], f_shape[4])
+            # Intra-Branch Consistency Loss
+            if lambda_2:
+                x = concat_feature
+                x = x.reshape(f_shape[0], f_shape[1], f_shape[2], f_shape[3] * f_shape[4])
+                x = nn.Softmax(dim=3)(x)
+                x = x.reshape(f_shape[0], f_shape[1], f_shape[2], f_shape[3], f_shape[4])
 
-            dc_loss = torch.sum(x, dim=2)
-            dc_loss = nn.AdaptiveMaxPool2d((1, 1))(dc_loss)
-            dc_loss = torch.mean(dc_loss)
+                dc_loss = torch.sum(x, dim=2)
+                dc_loss = nn.AdaptiveMaxPool2d((1, 1))(dc_loss)
+                dc_loss = torch.mean(dc_loss)
 
-            loss = loss + lambda_2 * dc_loss
+                loss = loss + lambda_2 * dc_loss
 
-        # Inter-Branch Diversity Loss
-        if lambda_3:
-            x = concat_feature
-            x = torch.transpose(x, 1, 2)
-            x = x.reshape(f_shape[0], f_shape[2], f_shape[1], f_shape[3] * f_shape[4])
-            x = nn.Softmax(dim=3)(x)
-            x = x.reshape(f_shape[0], f_shape[2], f_shape[1], f_shape[3], f_shape[4])
+            # Inter-Branch Diversity Loss
+            if lambda_3:
+                x = concat_feature
+                x = torch.transpose(x, 1, 2)
+                x = x.reshape(f_shape[0], f_shape[2], f_shape[1], f_shape[3] * f_shape[4])
+                x = nn.Softmax(dim=3)(x)
+                x = x.reshape(f_shape[0], f_shape[2], f_shape[1], f_shape[3], f_shape[4])
 
-            dc_loss = torch.sum(x, dim=2)
-            dc_loss = nn.AdaptiveMaxPool2d((1, 1))(dc_loss)
-            dc_loss = -torch.mean(dc_loss)
+                dc_loss = torch.sum(x, dim=2)
+                dc_loss = nn.AdaptiveMaxPool2d((1, 1))(dc_loss)
+                dc_loss = -torch.mean(dc_loss)
 
-            loss = loss + lambda_3 * dc_loss
+                loss = loss + lambda_3 * dc_loss
 
-        # Ranking Loss
-        if lambda_4:
-            len_out = len(leaves_out)
+            # Ranking Loss
+            if lambda_4:
+                len_out = len(leaves_out)
 
-            raw_leaves_out = tuple((torch.exp(leaves_out[i]) for i in range(len_out)))
+                raw_leaves_out = tuple((torch.exp(leaves_out[i]) for i in range(len_out)))
 
-            raw_penultimate_out = tuple((torch.exp(penultimate_out[i]) for i in range(len_out)))
+                raw_penultimate_out = tuple((torch.exp(penultimate_out[i]) for i in range(len_out)))
 
-            for out in penultimate_out:
-                loss = loss + lambda_4 * nn.NLLLoss()(out, label)
+                for out in penultimate_out:
+                    loss = loss + lambda_4 * nn.NLLLoss()(out, label)
 
-            for i in range(len_out):
-                loss = loss + lambda_4 * nn.MarginRankingLoss(margin=margin)(
-                              raw_leaves_out[i][torch.arange(f_shape[0]), label],
-                              raw_penultimate_out[i][torch.arange(f_shape[0]), label], target)
+                for i in range(len_out):
+                    loss = loss + lambda_4 * nn.MarginRankingLoss(margin=margin)(
+                                  raw_leaves_out[i][torch.arange(f_shape[0]), label],
+                                  raw_penultimate_out[i][torch.arange(f_shape[0]), label], target)
 
         return loss
